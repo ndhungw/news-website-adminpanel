@@ -9,7 +9,10 @@ usersController.showAllArticles = async (req, res, next) => {
   try {
     console.log("... RUN - usersController.showAllArticles");
     const articles = await ArticleModel.getAllArticles();
-    res.render("users/articles/articles", { articles: articles });
+    res.render("users/articles/articles", {
+      title: "Quản lý bài viết",
+      articles: articles,
+    });
   } catch (e) {
     console.log(
       "... Get error when run - usersController.showAllArticles - " + e
@@ -24,6 +27,7 @@ usersController.showNewArticlePage = async (req, res, next) => {
     const categories = await CategoryModel.getAllCategories();
 
     res.render("users/articles/new", {
+      title: "Tạo bài viết mới",
       article: new ArticleModel(),
       categories: categories,
     });
@@ -37,7 +41,10 @@ usersController.showNewArticlePage = async (req, res, next) => {
 usersController.getArticle = async (req, res, next) => {
   try {
     const article = await ArticleModel.getArticle(req.params.slug);
-    res.render("users/articles/show", { article: article });
+    res.render("users/articles/show", {
+      title: "Chi tiết bài viết",
+      article: article,
+    });
   } catch (e) {
     console.log("... Get error when run - usersController.getArticle - " + e);
     res.redirect("/users/articles");
@@ -86,6 +93,7 @@ usersController.showEditArticlePage = async (req, res, next) => {
     // get all categories
     const categories = await CategoryModel.getAllCategories();
     res.render("users/articles/edit", {
+      title: "Chỉnh sửa bài viết",
       article: articleToEdit,
       categories: categories,
     });
@@ -112,6 +120,7 @@ usersController.editArticle = async (req, res, next) => {
     // get all categories
     const categories = await CategoryModel.getAllCategories();
     res.render("users/articles/edit", {
+      title: "Chỉnh sửa bài viết",
       article: articleToEdit,
       categories: categories,
     });
@@ -159,14 +168,20 @@ usersController.showAllCategories = async (req, res) => {
   try {
     console.log("... RUN - usersController.showAllCategories");
     const categories = await CategoryModel.getAllCategories();
-    res.render("users/categories/categories", { categories: categories });
+    res.render("users/categories/categories", {
+      title: "Danh sách danh mục",
+      categories: categories,
+    });
   } catch (e) {}
 };
 
 usersController.showNewCategoryPage = (req, res, next) => {
   try {
     console.log("... RUN - usersController.showNewCategoryPage");
-    res.render("users/categories/new", { category: new CategoryModel() });
+    res.render("users/categories/new", {
+      title: "Tạo danh mục mới",
+      category: new CategoryModel(),
+    });
   } catch (e) {
     console.log(
       "... Get error when run - usersController.showNewCategoryPage - " + e
@@ -193,6 +208,7 @@ usersController.getCategoryByCategorySlug = async (req, res, next) => {
 usersController.addCategory = async (req, res, next) => {
   let categoryToAdd = new CategoryModel({
     title: req.body.title,
+    description: req.body.description,
   });
 
   try {
@@ -221,7 +237,10 @@ usersController.showEditCategoryPage = async (req, res, next) => {
   try {
     console.log("... RUN - usersController.showEditCategoryPage");
     let categoryToEdit = await CategoryModel.getCategoryById(req.params.id);
-    res.render("users/categories/edit", { category: categoryToEdit });
+    res.render("users/categories/edit", {
+      title: "Chỉnh sửa thể loại",
+      category: categoryToEdit,
+    });
   } catch (e) {
     console.log(
       "... Get error when run - usersController.showEditCategoryPage - " + e
@@ -234,6 +253,7 @@ usersController.editCategory = async (req, res, next) => {
     console.log("... RUN - usersController.editCategory");
     let categoryToEdit = await CategoryModel.getCategoryById(req.params.id);
     categoryToEdit.title = req.body.title;
+    categoryToEdit.description = req.body.description;
 
     await categoryToEdit.save();
     res.redirect(`/users/categories/${categoryToEdit.categorySlug}`);
