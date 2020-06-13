@@ -13,6 +13,9 @@ let categorySchema = new Schema({
     required: true,
     unique: true,
   },
+  description: {
+    type: String,
+  },
 });
 
 categorySchema.pre("validate", function (next) {
