@@ -1,5 +1,6 @@
 const ArticleModel = require("./../models/articleModel");
 const CategoryModel = require("./../models/categoryModel");
+const imageMimeTypes = ['image/jpeg','image/jpg','image/png','images/gif'];
 
 usersController = {};
 
@@ -59,6 +60,8 @@ usersController.addArticle = async (req, res, next) => {
     markdown: req.body.markdown,
   });
 
+  saveCover(articleToAdd,req.body.cover);
+
   try {
     console.log("... RUN - usersController.addArticle");
     articleToAdd = await ArticleModel.addArticle(articleToAdd);
@@ -73,6 +76,20 @@ usersController.addArticle = async (req, res, next) => {
     });
   }
 };
+
+function saveCover(article, coverEncoded) {
+  if (coverEncoded == null) {
+    return
+  }
+
+  const cover = JSON.parse(coverEncoded);
+  console.log('imageMimeTypes.includes(cover.type) = '+ imageMimeTypes.includes(cover.type));
+  
+  if (cover != null && imageMimeTypes.includes(cover.type)) {
+    article.coverImage = new Buffer.from(cover.data, 'base64');
+    article.coverImageType = cover.type
+  }
+}
 
 usersController.deleteArticle = async (req, res, next) => {
   try {
@@ -112,7 +129,11 @@ usersController.editArticle = async (req, res, next) => {
     articleToEdit = await ArticleModel.getArticleById(req.params.id);
     articleToEdit.title = req.body.title;
     articleToEdit.description = req.body.description;
+    articleToEdit.category = req.body.category;
     articleToEdit.markdown = req.body.markdown;
+
+    saveCover(articleToEdit,req.body.cover);
+
     await articleToEdit.save();
     res.redirect(`/users/articles/${articleToEdit.slug}`);
   } catch (e) {

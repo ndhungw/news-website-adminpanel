@@ -1,19 +1,39 @@
 <div class="form-group">
   <label for="title">Title</label>
-  <input
-    required
-    value="<%= article.title %>"
-    type="text"
-    name="title"
-    id="title"
-    class="form-control"
-  />
+  <input required value="<%= article.title %>" type="text" name="title" id="title" class="form-control" />
 </div>
 <div class="form-group">
   <label for="description">Description</label>
-  <textarea name="description" id="description" class="form-control">
-<%= article.description %></textarea
-  >
+  <textarea name="description" id="description" class="form-control" maxlength="100">
+<%= article.description %></textarea>
+</div>
+
+<div class="row mb-3">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <% if (article.coverImagePath) { %>
+
+        <h5 class="card-title">Cover Image</h5>
+        <p class="card-text">Old cover image of this article</p>\
+        <img style="width: 30vh; height: 30vh;" class="card-img-top" src="<%= article.coverImagePath %>"
+          alt="Cover image of article">
+        <% } else { %>
+        <p class="card-text"><small class="text-muted">No cover image found</small></p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">New cover image</h5>
+        <p class="card-text">Upload a new cover image for this article</p>
+        <label for="">New cover</label>
+        <input type="file" name="cover" class="filepond">
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="form-group">
@@ -21,24 +41,15 @@
   <select class="form-control" id="categorySelect" name="category">
     <option disabled selected>Chọn danh mục</option>
     <% categories.forEach(category => { %>
-    <option <% if (article.title) { %>
-      selected <% } %> ><%= category.title %></option
-    >
+    <option <% if (article.category == category.title) { %> selected <% } %>><%= category.title %></option>
     <% }) %>
   </select>
 </div>
 
 <div class="form-group">
   <label for="markdown">Markdown</label>
-  <textarea
-    name="markdown"
-    id="markdown"
-    class="form-control"
-    cols="30"
-    rows="20"
-  >
-<%= article.markdown %></textarea
-  >
+  <textarea name="markdown" id="markdown" class="form-control" cols="20" rows="10">
+<%= article.markdown %></textarea>
 </div>
 
 <a href="/users/articles" class="btn btn-secondary">Cancel</a>

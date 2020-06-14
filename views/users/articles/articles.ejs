@@ -25,6 +25,7 @@
               <th>Category</th>
               <th>Created at</th>
               <th>Description</th>
+              <th>Cover Image</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -34,6 +35,7 @@
               <th>Category</th>
               <th>Created at</th>
               <th>Description</th>
+              <th>Cover Image</th>
               <th>Action</th>
             </tr>
           </tfoot>
@@ -44,6 +46,9 @@
               <td><%= article.category %></td>
               <td><%= article.createdAt.toLocaleString() %></td>
               <td><%= article.description %></td>
+              <td>
+                <img style="max-width: 100px;" src="<%= article.coverImagePath %>">
+              </td>
               <td>
                 <ul class="list-inline mt-0 mb-0">
                   <li class="list-inline-item">

@@ -15,6 +15,14 @@ let articleSchema = new Schema({
   description: {
     type: String,
   },
+  coverImage: {
+    type: Buffer,
+    required: true,
+  },
+  coverImageType: {
+    type: String,
+    required: true,
+  },
   category: {
     type: String,
     required: true,
@@ -34,7 +42,7 @@ let articleSchema = new Schema({
   },
   ctgSlug: {
     type: String,
-    required: true,
+    require: true,
   },
   sanitizedHTML: {
     type: String,
@@ -65,6 +73,12 @@ articleSchema.pre("validate", function (next) {
 
   next();
 });
+
+articleSchema.virtual('coverImagePath').get(function() {
+  if (this.coverImage != null && this.coverImageType != null) {
+    return `data:${this.coverImageType};charset=utf-8;base64,${this.coverImage.toString('base64')}`
+  }
+})
 
 let ArticleModel = mongoose.model("Article", articleSchema, "articles");
 
