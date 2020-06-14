@@ -35,7 +35,6 @@ let articleSchema = new Schema({
   ctgSlug: {
     type: String,
     required: true,
-    unique: true,
   },
   sanitizedHTML: {
     type: String,
