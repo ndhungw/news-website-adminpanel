@@ -19,12 +19,16 @@ app.set("view engine", "ejs");
 app.set('layout', 'layouts/layout');
 
 app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+app.use(express.json({limit: '50mb'})); // edit for avoiding error: request entity too large
+app.use(express.urlencoded({ extended: false, limit: '50mb'})); // edit for avoiding error: request entity too large
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
-app.use(expressLayouts )
+app.use(expressLayouts);
+
+
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
