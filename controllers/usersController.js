@@ -1,10 +1,169 @@
 const ArticleModel = require("./../models/articleModel");
 const CategoryModel = require("./../models/categoryModel");
-const imageMimeTypes = ['image/jpeg','image/jpg','image/png','images/gif'];
+const UserModel = require("../models/userModel");
+const imageMimeTypes = ["image/jpeg", "image/jpg", "image/png", "images/gif"];
+const bcrypt = require("bcrypt");
 
 usersController = {};
 
-/* Manage articles */
+/* --- Manage authentication --- */
+
+// Show login page
+usersController.showLoginPage = async (req, res) => {
+  try {
+    console.log("... RUN - usersController.showLoginPage");
+    res.render("authentication/login", {
+      layout: "layouts/not-authen-layout",
+      title: "Đăng nhập",
+    });
+  } catch (e) {
+    console.log(
+      "... Get error when run - usersController.showLoginPage - " + e
+    );
+  }
+};
+
+// Show register page
+usersController.showRegisterPage = async (req, res) => {
+  try {
+    console.log("... RUN - usersController.showRegisterPage");
+
+    res.render("authentication/register", {
+      layout: "layouts/not-authen-layout",
+      title: "Đăng kí",
+    });
+  } catch (e) {
+    console.log(
+      "... Get error when run - usersController.showRegisterPage - " + e
+    );
+  }
+};
+
+// Do register a new account
+usersController.registerNewUser = async (req, res) => {
+  let { firstName, lastName, email, password, password2, avatar } = req.body;
+  let errors = [];
+
+  // check required fields
+  if (!firstName || !lastName || !email || !password || !password2) {
+    errors.push({ msg: "Please fill all fields" });
+    req.flash('warning_msg', 'Please fill all fields');
+  }
+
+  // check password match
+  if (password !== password2) {
+    errors.push({ msg: "Passwords do not match" });
+    req.flash('warning_msg', 'Passwords do not match');
+  }
+
+  // check pass length
+  if (password.length < 6) {
+    errors.push({ msg: "Password should be at least 6 characters" });
+    req.flash('warning_msg', 'Password should be at least 6 characters');
+  }
+
+  // got errorss
+  if (errors.length > 0) {
+    console.log("have issues in register info");
+    res.render("authentication/register", {
+      layout: "layouts/not-authen-layout",
+      errors,
+      firstName,
+      lastName,
+      email,
+      password,
+      password2,
+      avatar,
+    });
+  } else {
+    const existUser = await UserModel.getUserByEmail(email);
+
+    if (existUser) {
+      //user exists
+      errors.push({ msg: "Email is already registered" });
+      req.flash('warning_msg', 'Email is already registered');
+
+      res.render("authentication/register", {
+        layout: "layouts/not-authen-layout",
+        errors,
+        firstName,
+        lastName,
+        email,
+        password,
+        password2,
+        avatar,
+      });
+    } else {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      let newUser = new UserModel({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: hashedPassword,
+      });
+
+      saveAvatar(newUser, req.body.avatar);
+
+      try {
+        await UserModel.addUser(newUser);
+        // await mailer.sendVerificationEmail(newUser);
+        console.log("new user\n" + newUser);
+
+        req.flash("success_msg", "You are now registered and can log in");
+        res.redirect("/users/login");
+      } catch (err) {
+        console.log("Error in newUser.save() + ", err);
+      }
+    }
+  }
+};
+
+function saveAvatar(user, avatarEncoded) {
+  if (avatarEncoded == null) {
+    return;
+  }
+
+  const avatar = JSON.parse(avatarEncoded);
+  console.log(
+    "imageMimeTypes.includes(cover.type) = " +
+      imageMimeTypes.includes(avatar.type)
+  );
+
+  if (avatar != null && imageMimeTypes.includes(avatar.type)) {
+    user.avatarImage = new Buffer.from(avatar.data, "base64");
+    user.avatarImageType = avatar.type;
+  }
+}
+
+// Show log out page
+usersController.logout = async (req, res) => {
+  try {
+    console.log("... RUN - usersController.logout");
+    req.logOut();
+    res.redirect('/users/login')
+  } catch (e) {
+    console.log(
+      "... Get error when run - usersController.logout - " + e
+    );
+  }
+};
+
+// Show forgot password page
+usersController.showForgotPwPage = async (req, res) => {
+  try {
+    console.log("... RUN - usersController.showForgotPwPage");
+    res.render("authentication/forgot-password", {
+      layout: "layouts/not-authen-layout",
+      title: "Quên mật khẩu",
+    });
+  } catch (e) {
+    console.log(
+      "... Get error when run - usersController.showForgotPwPage - " + e
+    );
+  }
+};
+
+/* --- Manage articles --- */
 
 usersController.showAllArticles = async (req, res, next) => {
   try {
@@ -60,7 +219,7 @@ usersController.addArticle = async (req, res, next) => {
     markdown: req.body.markdown,
   });
 
-  saveCover(articleToAdd,req.body.cover);
+  saveCover(articleToAdd, req.body.cover);
 
   try {
     console.log("... RUN - usersController.addArticle");
@@ -79,15 +238,19 @@ usersController.addArticle = async (req, res, next) => {
 
 function saveCover(article, coverEncoded) {
   if (coverEncoded == null) {
-    return
+    console.log('coverEncoded == null')
+    return;
   }
 
   const cover = JSON.parse(coverEncoded);
-  console.log('imageMimeTypes.includes(cover.type) = '+ imageMimeTypes.includes(cover.type));
-  
+  console.log(
+    "imageMimeTypes.includes(cover.type) = " +
+      imageMimeTypes.includes(cover.type)
+  );
+
   if (cover != null && imageMimeTypes.includes(cover.type)) {
-    article.coverImage = new Buffer.from(cover.data, 'base64');
-    article.coverImageType = cover.type
+    article.coverImage = new Buffer.from(cover.data, "base64");
+    article.coverImageType = cover.type;
   }
 }
 
@@ -132,7 +295,7 @@ usersController.editArticle = async (req, res, next) => {
     articleToEdit.category = req.body.category;
     articleToEdit.markdown = req.body.markdown;
 
-    saveCover(articleToEdit,req.body.cover);
+    saveCover(articleToEdit, req.body.cover);
 
     await articleToEdit.save();
     res.redirect(`/users/articles/${articleToEdit.slug}`);
@@ -166,25 +329,7 @@ function saveArticleAndRedirect(path) {
   };
 }
 
-// usersController.saveArticleAndRedirect = function (path) {
-//   return async (req, res) => {
-//     let article = req.article;
-//     article.title = req.body.title;
-//     article.description = req.body.description;
-//     article.description = req.body.description;
-
-//     try {
-//       console.log("... RUN - saveArticleAndRedirect");
-//       article = await article.save();
-//       res.redirect(`/users/articles/${article.slug}`);
-//     } catch (e) {
-//       console.log("... Get error when run - saveArticleAndRedirect - " + e);
-//       res.render(`pages/users/articles/${path}`, { article: article });
-//     }
-//   };
-// };
-
-/* Manage categories */
+/* --- Manage categories --- */
 usersController.showAllCategories = async (req, res) => {
   try {
     console.log("... RUN - usersController.showAllCategories");
