@@ -119,7 +119,7 @@ usersController.registerNewUser = async (req, res) => {
 };
 
 function saveAvatar(user, avatarEncoded) {
-  if (avatarEncoded == null) {
+  if (!avatarEncoded) {
     return;
   }
 
