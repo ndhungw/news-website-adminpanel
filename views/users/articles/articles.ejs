@@ -43,7 +43,7 @@
           <tbody>
             <% articles.forEach(article => { %>
             <tr>
-              <td><%= article.title %></td>
+              <td><strong><%= article.title %></strong></td>
               <td><%= article.category %></td>
               <td><%= article.createdAt.toLocaleString() %></td>
               <td><%= article.author %></td>
