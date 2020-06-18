@@ -8,6 +8,10 @@ const dompurify = createDomPurify(new JSDOM().window);
 
 // create Schema
 let articleSchema = new Schema({
+  author: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,

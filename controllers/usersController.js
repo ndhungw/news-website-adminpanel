@@ -213,6 +213,7 @@ usersController.getArticle = async (req, res, next) => {
 
 usersController.addArticle = async (req, res, next) => {
   let articleToAdd = new ArticleModel({
+    author: `${req.user.lastName} ${req.user.firstName}`,
     title: req.body.title,
     description: req.body.description,
     category: req.body.category,
@@ -290,6 +291,8 @@ usersController.editArticle = async (req, res, next) => {
   try {
     console.log("... RUN - usersController.editArticle");
     articleToEdit = await ArticleModel.getArticleById(req.params.id);
+
+    articleToEdit.author = `${req.user.lastName} ${req.user.firstName}`;
     articleToEdit.title = req.body.title;
     articleToEdit.description = req.body.description;
     articleToEdit.category = req.body.category;
