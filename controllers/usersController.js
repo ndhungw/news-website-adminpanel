@@ -238,16 +238,11 @@ usersController.addArticle = async (req, res, next) => {
 };
 
 function saveCover(article, coverEncoded) {
-  if (coverEncoded == null) {
-    console.log('coverEncoded == null')
+  if (!coverEncoded) {
     return;
-  }
+  }  
 
-  const cover = JSON.parse(coverEncoded);
-  console.log(
-    "imageMimeTypes.includes(cover.type) = " +
-      imageMimeTypes.includes(cover.type)
-  );
+  const cover = JSON.parse(coverEncoded); 
 
   if (cover != null && imageMimeTypes.includes(cover.type)) {
     article.coverImage = new Buffer.from(cover.data, "base64");
