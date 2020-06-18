@@ -12,15 +12,10 @@
   <div class="col-sm-6">
     <div class="card">
       <div class="card-body">
-        <% if (article.coverImagePath) { %>
-
         <h5 class="card-title">Cover Image</h5>
-        <p class="card-text">Old cover image of this article</p>\
-        <img style="width: 30vh; height: 30vh;" class="card-img-top" src="<%= article.coverImagePath %>"
+        <p class="card-text">Old cover image of this article</p>
+        <img class="card-img-top img-fluid rounded mx-auto d-block" src="<%= article.coverImagePath %>"
           alt="Cover image of article">
-        <% } else { %>
-        <p class="card-text"><small class="text-muted">No cover image found</small></p>
-        <% } %>
       </div>
     </div>
   </div>
