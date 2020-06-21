@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Register</title>
+  <title><%= title %></title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -34,7 +34,7 @@
           <div class=" col-lg-7">
               <div class="p-5">
                 <div class="text-center">
-                  <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                  <h1 class="h4 text-gray-900 mb-4">Tạo một tài khoản mới!</h1>
                 </div>
 
                 <%- include('../partials/messages.ejs') %>
@@ -44,37 +44,37 @@
                     <!-- First Name -->
                     <div class="col-sm-6 mb-3 mb-sm-0">
                       <input type="text" class="form-control form-control-user" id="exampleFirstName" name="firstName"
-                        required placeholder="First Name">
+                        required placeholder="Tên của bạn">
                     </div>
                     <!-- Last Name -->
                     <div class="col-sm-6">
                       <input type="text" class="form-control form-control-user" id="exampleLastName" name="lastName"
-                        required placeholder="Last Name">
+                        required placeholder="Họ của bạn">
                     </div>
                   </div>
                   <!-- Email -->
                   <div class="form-group">
                     <input type="email" class="form-control form-control-user" id="exampleInputEmail" name="email"
-                      required placeholder="Email Address">
+                      required placeholder="Địa chỉ Email">
                   </div>
                   <!-- Password -->
                   <div class="form-group row">
                     <!-- Password -->
                     <div class="col-sm-6 mb-3 mb-sm-0">
                       <input type="password" class="form-control form-control-user" id="exampleInputPassword"
-                        name="password" required placeholder="Password">
+                        name="password" required placeholder="Mật khẩu">
                     </div>
                     <!-- Re-password -->
                     <div class="col-sm-6">
                       <input type="password" class="form-control form-control-user" id="exampleRepeatPassword"
-                        name="password2" required placeholder="Repeat Password">
+                        name="password2" required placeholder="Nhập lại mật khẩu">
                     </div>
                   </div>
                   <div class="form-group-row">
-                    <p class="card-text">Upload your avatar</p>
+                    <p class="card-text">Chọn ảnh đại diện</p>
                     <input type="file" name="avatar" class="filepond">
                   </div>
-                  <button type="submit" class="btn btn-primary btn-user btn-block">Register Account</button>
+                  <button type="submit" class="btn btn-primary btn-user btn-block">Đăng kí tài khoản</button>
                   <!-- <hr>
                 <a href="index.html" class="btn btn-google btn-user btn-block">
                   <i class="fab fa-google fa-fw"></i> Register with Google
@@ -85,10 +85,10 @@
                 </form>
                 <hr>
                 <div class="text-center">
-                  <a class="small" href="/users/forgot-password">Forgot Password?</a>
+                  <a class="small" href="/users/forgot-password">Quên mật khẩu?</a>
                 </div>
                 <div class="text-center">
-                  <a class="small" href="/users/login">Already have an account? Login!</a>
+                  <a class="small" href="/users/login">Đã có tài khoản? Đăng nhập thôi!</a>
                 </div>
               </div>
             </div>
