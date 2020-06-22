@@ -4,7 +4,7 @@
 </div>
 <div class="form-group">
   <label for="description">Mô tả</label>
-  <textarea name="description" id="description" class="form-control">
+  <textarea name="description" id="description" class="form-control" maxlength="370">
 <%= article.description %></textarea>
 </div>
 
@@ -43,7 +43,7 @@
 
 <div class="form-group">
   <label for="markdown">Nội dung bai viêt (Viết bằng markdown)</label>
-  <textarea name="markdown" id="markdown" class="form-control" cols="20" rows="10">
+  <textarea name="markdown" id="markdown" class="form-control" cols="20" rows="40">
 <%= article.markdown %></textarea>
 </div>
 
