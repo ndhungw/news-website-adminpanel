@@ -3,8 +3,7 @@
   <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800">Tips sử dụng hiệu quả</h1>
   <p class="mb-4">
-    Để tìm kiếm theo một tiêu chí (ví dụ như Description) thì phải
-    click chọn vào cột đó sau đó mới thực hiện tìm kiếm.
+    Tìm kiếm bất kì thông tin nào trong ô Search.
   </p>
   <div class="card-body">
     <a href="/users/articles/new" class="btn btn-success">Tạo bài viết mới</a>
@@ -21,33 +20,37 @@
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Created at</th>
-              <th>Description</th>
-              <th>Cover Image</th>
-              <th>Action</th>
+              <th>Tiêu đề</th>
+              <th>Danh mục</th>
+              <th>Ngày tạo</th>
+              <th>Tác giả</th>
+              <th>Mô tả</th>
+              <th>Bìa</th>
+              <th>Thao tác</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Created at</th>
-              <th>Description</th>
-              <th>Cover Image</th>
-              <th>Action</th>
+              <th>Tiêu đề</th>
+              <th>Danh mục</th>
+              <th>Ngày tạo</th>
+              <th>Tác giả</th>
+              <th>Mô tả</th>
+              <th>Bìa</th>
+              <th>Thao tác</th>
             </tr>
           </tfoot>
           <tbody>
             <% articles.forEach(article => { %>
             <tr>
-              <td><%= article.title %></td>
+              <td><strong><%= article.title %></strong></td>
               <td><%= article.category %></td>
               <td><%= article.createdAt.toLocaleString() %></td>
+              <td><%= article.author %></td>
               <td><%= article.description %></td>
               <td>
-                <img style="max-width: 100px;" src="<%= article.coverImagePath %>">
+                <img style="min-width: 50px;" class="img-fluid rounded mx-auto d-block"
+                  src="<%= article.coverImagePath %>">
               </td>
               <td>
                 <ul class="list-inline mt-0 mb-0">

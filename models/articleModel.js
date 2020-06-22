@@ -8,6 +8,10 @@ const dompurify = createDomPurify(new JSDOM().window);
 
 // create Schema
 let articleSchema = new Schema({
+  author: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -17,11 +21,9 @@ let articleSchema = new Schema({
   },
   coverImage: {
     type: Buffer,
-    required: true,
   },
   coverImageType: {
     type: String,
-    required: true,
   },
   category: {
     type: String,
@@ -74,11 +76,13 @@ articleSchema.pre("validate", function (next) {
   next();
 });
 
-articleSchema.virtual('coverImagePath').get(function() {
+articleSchema.virtual("coverImagePath").get(function () {
   if (this.coverImage != null && this.coverImageType != null) {
-    return `data:${this.coverImageType};charset=utf-8;base64,${this.coverImage.toString('base64')}`
+    return `data:${this.coverImageType};charset=utf-8;base64,${this.coverImage.toString("base64")}`;
+  } else {
+    return "img/no-preview-available.png";
   }
-})
+});
 
 let ArticleModel = mongoose.model("Article", articleSchema, "articles");
 

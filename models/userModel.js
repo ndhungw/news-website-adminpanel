@@ -22,19 +22,19 @@ let userSchema = new Schema({
   },
   avatarImage: {
     type: Buffer,
-    required: true,
   },
   avatarImageType: {
     type: String,
-    required: true,
-  }, 
+  },
 });
 
-userSchema.virtual('avatarImagePath').get(function() {
+userSchema.virtual("avatarImagePath").get(function () {
   if (this.avatarImage != null && this.avatarImageType != null) {
-    return `data:${this.avatarImageType};charset=utf-8;base64,${this.avatarImage.toString('base64')}`
+    return `data:${this.avatarImageType};charset=utf-8;base64,${this.avatarImage.toString("base64")}`;
+  } else {
+    return "img/user.png";
   }
-})
+});
 
 let UserModel = mongoose.model("User", userSchema, "users");
 
@@ -47,16 +47,15 @@ UserModel.getAllUser = () => {
 
 // Get a user by email
 UserModel.getUserByEmail = (email) => {
-    console.log("... RUN - UserModel.getUserByEmail()");
-    const query = UserModel.findOne({email: email});
-    return query;
-  }; 
+  console.log("... RUN - UserModel.getUserByEmail()");
+  const query = UserModel.findOne({ email: email });
+  return query;
+};
 
 // Add a user
 UserModel.addUser = (userToAdd) => {
   console.log("... RUN - UserModel.addUser()");
   return userToAdd.save();
 };
-
 
 module.exports = UserModel;
